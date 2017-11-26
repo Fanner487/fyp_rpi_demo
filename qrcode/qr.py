@@ -1,33 +1,16 @@
 import os
-#import qrtools
-#import zbar
 import picamera
-#import qrtools
 from time import sleep
 
-
-
-
-
+output_image_path = "scan.png"
+output_qr_path = "result.txt"
 camera = picamera.PiCamera()
-
-strpath = "/home/pi/dev/qrcode/"
-
-strfile = "qrtest"
-
-
-
 countdown = 3
-
-
 
 print "Taking a snapshot in"
 
-
-
-while countdown > 1:
-
-
+# counts down from 3 before taking snapshot
+while countdown > 0:
 
 	print str(countdown)
 
@@ -36,34 +19,21 @@ while countdown > 1:
 	countdown -= 1
 
 
-
-
-
-camera.capture("qrtest.png")
-
-##print "Encoding url into qrcode"
-
-# # call os command to create qr code with some data
-
-##os.system("qrencode -o "+strpath+strfile+".png 'http://www.raspberrypi.org'")
-
+camera.capture(output_image_path)
 
 
 print "Reading data from qrcode"
 
+
 # call os command to read qr data to text file
 
-os.system("zbarimg -q qrtest.png > qrtest.txt")
+os.system("zbarimg -q " + output_image_path + " > " + output_qr_path)
 
 
 
-strreadtext = strpath+strfile+".txt"
+if os.path.exists(output_qr_path):
 
-
-
-if os.path.exists(strreadtext):
-
-        strqrcode = open(strreadtext, 'r').read()
+        strqrcode = open(output_qr_path, 'r').read()
 
         print strqrcode
 
